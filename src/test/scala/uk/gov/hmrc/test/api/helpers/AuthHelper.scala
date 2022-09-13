@@ -20,6 +20,7 @@ import org.scalatest.Assertions.fail
 import play.api.libs.ws.StandaloneWSRequest
 import uk.gov.hmrc.test.api.service.AuthService
 
+//TODO: will probably modify and use this when we add auth to our services
 class AuthHelper {
 
   val authAPI: AuthService = new AuthService

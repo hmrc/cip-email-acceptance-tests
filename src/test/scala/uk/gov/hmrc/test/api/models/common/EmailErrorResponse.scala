@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.test.api.models
+package uk.gov.hmrc.test.api.models.common
 
-import play.api.libs.json.{Json, OFormat}
+import play.api.libs.json.Json
 
-case class IndividualsLinks(name: String, href: String, title: String)
+case class EmailErrorResponse(code: String, message: String)
 
-object IndividualsLinks {
-  implicit val userJsonFormat: OFormat[IndividualsLinks] = Json.format[IndividualsLinks]
+object EmailErrorResponse {
+  implicit val formats = Json.format[EmailErrorResponse]
 }
