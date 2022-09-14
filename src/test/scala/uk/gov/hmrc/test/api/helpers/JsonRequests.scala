@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.test.api.specs
+package uk.gov.hmrc.test.api.helpers
 
-import org.scalatest._
-import org.scalatest.featurespec.AnyFeatureSpec
-import org.scalatest.matchers.should.Matchers
-import uk.gov.hmrc.test.api.helpers.AuthHelper
+trait JsonRequests {
+  val headers = ("content-type" -> "application/json")
+  val pathPrefix = "/customer-insight-platform/email"
 
-trait BaseSpec extends AnyFeatureSpec with GivenWhenThen with BeforeAndAfterAll with Matchers {
-  val authHelper = new AuthHelper
+  val emailRequest = (email: String) => s"""{"email" : "$email" }"""
 }

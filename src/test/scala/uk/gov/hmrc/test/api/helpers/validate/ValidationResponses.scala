@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.test.api.specs
+package uk.gov.hmrc.test.api.helpers.validate
 
-import org.scalatest._
-import org.scalatest.featurespec.AnyFeatureSpec
-import org.scalatest.matchers.should.Matchers
-import uk.gov.hmrc.test.api.helpers.AuthHelper
+import uk.gov.hmrc.test.api.models.common.EmailErrorResponse
+import uk.gov.hmrc.test.api.models.common.validate.EmailResponse
 
-trait BaseSpec extends AnyFeatureSpec with GivenWhenThen with BeforeAndAfterAll with Matchers {
-  val authHelper = new AuthHelper
+object ValidationResponses {
+
+  var emailResponse: EmailResponse = _
+  var emailErrorResponse: EmailErrorResponse = _
+
 }

@@ -19,6 +19,7 @@ eclipse
 .scala_dependencies
 
 # sbt files
+.bsp/*
 dist
 target
 lib_managed
