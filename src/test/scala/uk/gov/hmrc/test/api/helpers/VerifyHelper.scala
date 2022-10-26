@@ -16,9 +16,18 @@
 
 package uk.gov.hmrc.test.api.helpers
 
-trait JsonRequests {
-  val headers = ("content-type" -> "application/json")
-  val pathPrefix = "/customer-insight-platform/email"
+import play.api.libs.ws.StandaloneWSResponse
+import uk.gov.hmrc.test.api.service.VerifyService
 
-  val emailRequest = (email: String) => s"""{"email" : "$email" }"""
+class VerifyHelper {
+  val verifyMatchingServiceAPI: VerifyService = new VerifyService
+
+  def verify(email: String): StandaloneWSResponse = {
+    verifyMatchingServiceAPI.verify(email)
+  }
+
+  def verifyPasscode(email: String, passcode: String): StandaloneWSResponse = {
+    verifyMatchingServiceAPI.verifyPasscode(email, passcode)
+  }
+
 }

@@ -14,12 +14,19 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.test.api.models.common
+package uk.gov.hmrc.test.api.helpers.common
 
-import play.api.libs.json.Json
+import org.scalatest.Assertions.fail
+import play.api.libs.ws.StandaloneWSRequest
+import uk.gov.hmrc.test.api.service.AuthService
 
-case class EmailErrorResponse(code: String, message: String)
+//TODO: will probably modify and use this when we add auth to our services
+class AuthHelper {
 
-object EmailErrorResponse {
-  implicit val formats = Json.format[EmailErrorResponse]
+  val authAPI: AuthService = new AuthService
+
+  def getAuthBearerToken: String = {
+    val authServiceRequestResponse: StandaloneWSRequest#Self#Response = authAPI.postLogin
+    authServiceRequestResponse.header("Authorization").getOrElse(fail("Could not obtain auth bearer token"))
+  }
 }
