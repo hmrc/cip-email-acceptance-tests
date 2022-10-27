@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.test.api.models.common.validate
+package uk.gov.hmrc.test.api.models
 
 import play.api.libs.json.Json
 
-case class EmailResponse(email: String, phoneNumberType: String)
+case class EmailAndPasscodeData(email: String, passcode: String)
 
-object EmailResponse {
-  implicit val formats = Json.format[EmailResponse]
+object EmailAndPasscodeData {
+  implicit val reads = Json.reads[EmailAndPasscodeData]
 }
-
-
