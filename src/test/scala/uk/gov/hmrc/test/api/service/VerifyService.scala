@@ -24,7 +24,7 @@ import scala.concurrent.Await
 import scala.concurrent.duration.DurationInt
 
 class VerifyService extends HttpClient {
-  private val host = TestConfiguration.url("cip-email-verification") //TODO: change this to gateway when CAV-65 is done
+  private val host = TestConfiguration.url("cip-email")
   private val contextPath = "/customer-insight-platform/email"
   private val headers = Seq(("Content-Type", "application/json"), ("Accept", "application/json"))
 
@@ -60,5 +60,4 @@ class VerifyService extends HttpClient {
       ),
       10.seconds)
   }
-
 }
