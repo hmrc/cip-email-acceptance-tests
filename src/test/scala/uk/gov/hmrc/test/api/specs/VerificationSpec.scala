@@ -21,11 +21,11 @@ import play.api.http.Status.{ACCEPTED, BAD_REQUEST}
 import play.api.libs.json.JsValue
 import play.api.libs.ws.JsonBodyReadables.readableAsJson
 
+import scala.util.Random
+
 class VerificationSpec extends BaseSpec {
-  // TODO: enable as part of CAV-426
-  ignore("I wish to verify an email and use an invalid passcode") {
+  Scenario("I wish to verify an email and use an invalid passcode") {
     // inputs
-    val email = "someone@example.com"
 
     // a list of passcode input
     val invalidPasscodes = Table(
@@ -37,6 +37,10 @@ class VerificationSpec extends BaseSpec {
     )
 
     forAll(invalidPasscodes) { passcode =>
+
+      val emailRandomizer = Random.alphanumeric.take(5).mkString
+      val email = s"$emailRandomizer@example.com"
+      
       Given("I have a valid email")
       When("I validate it against the verification service")
       val verifyResponse = verifyMatchingHelper.verify(email)
@@ -52,14 +56,14 @@ class VerificationSpec extends BaseSpec {
 
       And("I get an error response")
       (verifyPasscodeResponse.body[JsValue] \ "code").as[Int] shouldBe 1002
-      (verifyPasscodeResponse.body[JsValue] \ "message").as[String] shouldBe "Enter a valid email"
+      (verifyPasscodeResponse.body[JsValue] \ "message").as[String] shouldBe "Enter a valid passcode"
     }
   }
 
-  // TODO: enable as part of CAV-426
-  ignore("I wish to verify an email and use an incorrect passcode") {
+  Scenario("I wish to verify an email and use an incorrect passcode") {
     // inputs
-    val email = "someone@example.com"
+    val emailRandomizer = Random.alphanumeric.take(4).mkString
+    val email = s"$emailRandomizer@example.com"
 
     Given("I have a valid email")
     When("I validate it against the verification service")
@@ -76,14 +80,14 @@ class VerificationSpec extends BaseSpec {
     (verifyPasscodeResponse.body[JsValue] \ "status").as[String] shouldBe "Not verified"
   }
 
-  // TODO: enable as part of CAV-426
-  ignore("I wish to verify a valid email and use correct passcode") {
+  Scenario("I wish to verify a valid email and use correct passcode") {
+    val emailRandomizer = Random.alphanumeric.take(1).mkString
     val validEmailData = Table(
-      "a@a.com",
-      "a@a",
-      "A@A.COM",
-      "&$!@a.com",
-      "123@a.com"
+      s"$emailRandomizer@a.com",
+      s"$emailRandomizer@a",
+      s"$emailRandomizer@A.COM",
+      s"&!@$emailRandomizer.com",
+      s"123@$emailRandomizer.com"
     )
 
     forAll(validEmailData) { email =>
@@ -103,28 +107,6 @@ class VerificationSpec extends BaseSpec {
 
       And("I get verified status with verified message")
       (verifyPasscodeResponse.body[JsValue] \ "status").as[String] shouldBe "Verified"
-    }
-  }
-
-  // TODO: can probably remove this as part of CAV-426 when above tests are enabled
-  Scenario("I wish to verify a valid email") {
-    // a list of input
-    val validEmailData = Table(
-      "a@a.com",
-      "a@a",
-      "A@A.COM",
-      "&$!@a.com",
-      "123@a.com"
-    )
-
-    forAll(validEmailData) { phoneNumber: String =>
-      Given("I have a valid email")
-      When("I verify it against the verification service")
-      val verifyResponse = verifyMatchingHelper.verify(phoneNumber)
-
-      Then("I should receive a notification Id")
-      verifyResponse.status shouldBe ACCEPTED
-      verifyResponse.header("Location").head shouldBe a[String]
     }
   }
 
